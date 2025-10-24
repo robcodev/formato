@@ -187,7 +187,7 @@ function App() {
         setFlags(prev => ({...prev, [name]: checked}))
     }
 
-    const handlePrint = ()=>{
+    const handlePrint = () => {
         window.print()
     }
 
@@ -217,11 +217,11 @@ function App() {
 
                 {/* EDITABLE */}
                 <div className={'pdfPrint col-span-3 border-2 rounded-sm text-left p-6 aspect-3/2'}>
-                    <ul className={'p-2 text-4xl text-left'}>
+                    <ul className={'p-2 text-3xl text-left'}>
 
                         <li className={''}>
                             <label className="">
-                                <span className=" ">DESPACHO #</span>
+                                <span className=" font-semibold">DESPACHO #</span>
                                 <input className=" rounded font-semibold"
                                        name="nombres" value={formData.preventa} onChange={handleChange}
                                        placeholder="Numero Preventa"/>
@@ -231,8 +231,8 @@ function App() {
                         <li>
 
                             <label className="">
-                                <span className=" text-xl">NOMBRES:</span>
-                                <input className="col-span-4 rounded p-2 font-semibold"
+                                <span className=" text-xl">NOMBRES:</span><br/>
+                                <input className="col-span-4 rounded w-full font-semibold"
                                        name="nombres" value={formData.nombres} onChange={handleChange}
                                        placeholder="Nombre Apellido"/>
                             </label>
@@ -279,19 +279,25 @@ function App() {
                         <li>
 
                             <label className="">
-                                <span className="text-xl ">DOMICILIO:</span>
-                                <input className="col-span-4 rounded p-2 font-semibold"
-                                       name="domicilio" value={formData.domicilio} onChange={handleChange}
-                                       placeholder="Calle 123, Depto"/>
+                                <span className="text-xl ">DOMICILIO:</span><br/>
+                                <textarea
+                                    className="w-full  font-semibold resize-none overflow-hidden leading-snug"
+                                    name="domicilio"
+                                    value={formData.domicilio}
+                                    onChange={handleChange}
+                                    placeholder="Calle 123, Depto"
+                                    rows={2}
+                                />
+
                             </label>
                         </li>
                     </ul>
 
 
-
                 </div>
                 <div>
-                    <button onClick={handlePrint} type={'button'} className={'p-4 border-2 bg-amber-400 hover:bg-blue-500 rounded-lg px-2 py-1'}>
+                    <button onClick={handlePrint} type={'button'}
+                            className={'p-4 border-2 bg-amber-400 hover:bg-blue-500 rounded-lg px-2 py-1'}>
                         IMPRIMIR
                     </button>
                 </div>
