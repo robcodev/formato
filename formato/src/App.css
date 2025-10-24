@@ -2,15 +2,11 @@
 
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 #root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 textarea {
@@ -18,4 +14,37 @@ textarea {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
+}
+
+/* ----- Solo para impresión ----- */
+@media print {
+  /* Define tamaño de página 3:2 (elige la unidad que prefieras) */
+  @page {
+    size: 300mm 200mm; /* 3:2 => 30cm x 20cm. Puedes usar 180mm 120mm, etc. */
+    margin: 0;         /* sin márgenes para usar toda el área */
+  }
+
+  /* Muestra únicamente la sección a imprimir */
+  body * { visibility: hidden !important; }
+  .pdfPrint, .pdfPrint * { visibility: visible !important; }
+
+  /* Colócala como página completa y respeta el aspecto 3:2 */
+  .pdfPrint {
+    position: fixed !important;
+    inset: 0 !important;
+    margin: 0 !important;
+    padding: 16px !important;   /* o lo que necesites */
+    width: 100vw !important;
+    height: calc(100vw * 2 / 3) !important; /* 3:2 => alto = ancho * 2/3 */
+    /* Si prefieres llenar el alto de la página, usa:
+       height: 100vh; width: calc(100vh * 3 / 2); */
+    box-sizing: border-box !important;
+    page-break-inside: avoid !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: white; /* por si usas fondos */
+    transform: scale(1.6);  /* aumenta 30 % */
+    transform-origin: top left;
+  }
 }

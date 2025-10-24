@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import {useState, useCallback} from 'react'
 import './App.css'
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
         telefono: '',
         correo: '',
         indicaciones: '',
+        preventa: ''
     })
 
     const normalize = (s = '') =>
@@ -50,6 +51,7 @@ function App() {
         region: ['region', 'región'], // por si luego quieres usarla
         tipoPedido: ['tipo de pedido'],
         sucursal: ['sucursal'],
+        preventa: ['preventa'],
     }
 
     const SKIP_LINES = new Set([
@@ -87,7 +89,7 @@ function App() {
             .map(l => clean(l))
             .filter(l => l !== '')
 
-        const result = { ...formData }
+        const result = {...formData}
         const used = new Set()
 
         for (let i = 0; i < lines.length; i++) {
@@ -140,6 +142,15 @@ function App() {
             cuentaCorriente: false,
         }
 
+        // --- PREVENTA ---
+        // Soporta: "PREVENTA #27967", "Pre-venta N° 27967", "Preventa: 27967", etc.
+        // Probamos sobre el texto original para no perder símbolos como # o °.
+        const preventaRegex = /\bpre\s*[-\s]*venta\b.*?(?:n[°ºo]?\.?|num(?:ero)?\.?|#|:)?\s*(\d{3,})/i
+        const mPre = text.match(preventaRegex)
+        if (mPre && !result.preventa) {
+            result.preventa = mPre[1]
+        }
+
         // Extrae email y RUT/telefono por si faltaron
         if (!result.correo) {
             const mail = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)
@@ -154,7 +165,7 @@ function App() {
             if (tel) result.telefono = tel[0]
         }
 
-        return { result, newFlags }
+        return {result, newFlags}
     }
 
     const handlePaste = useCallback((e) => {
@@ -162,115 +173,127 @@ function App() {
         const pasted = (e.clipboardData || window.clipboardData).getData('text')
         setRawPaste(pasted)
 
-        const { result, newFlags } = parseStackedPairs(pasted)
-        setFormData(prev => ({ ...prev, ...result }))
-        setFlags(prev => ({ ...prev, ...newFlags }))
+        const {result, newFlags} = parseStackedPairs(pasted)
+        setFormData(prev => ({...prev, ...result}))
+        setFlags(prev => ({...prev, ...newFlags}))
     }, [])
 
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
+        const {name, value} = e.target
+        setFormData(prev => ({...prev, [name]: value}))
     }
     const handleFlagChange = (e) => {
-        const { name, checked } = e.target
-        setFlags(prev => ({ ...prev, [name]: checked }))
+        const {name, checked} = e.target
+        setFlags(prev => ({...prev, [name]: checked}))
+    }
+
+    const handlePrint = ()=>{
+        window.print()
     }
 
     return (
         <>
-            <section className={''}>
-                <h1 className={'text-left'}>Despacho N°765321</h1>
+            <section className={'grid grid-cols-5 m-auto gap-y-4 gap-4'}>
 
-                <div className={'text-start px-2 grid grid-cols-2 gap-4'}>
-                    <div className={'border-2 rounded-sm px-2 grid-cols-1'}>
-                        {/* FLAGS */}
-                        <div className={'flex flex-wrap items-center gap-4 border-2 my-2 px-2 py-2'}>
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" name="porPagar" checked={flags.porPagar} onChange={handleFlagChange} />
-                                Por Pagar
-                            </label>
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" name="pagado" checked={flags.pagado} onChange={handleFlagChange} />
-                                Pagado
-                            </label>
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" name="agencia" checked={flags.agencia} onChange={handleFlagChange} />
-                                Agencia
-                            </label>
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" name="domicilio" checked={flags.domicilio} onChange={handleFlagChange} />
-                                Domicilio
-                            </label>
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" name="cuentaCorriente" checked={flags.cuentaCorriente} onChange={handleFlagChange} />
-                                CTA CTE
-                            </label>
-                        </div>
+                <div className={'text-start px-2 grid grid-cols-1 gap-4'}>
 
-                        {/* PASTE AREA */}
-                        <form className={'border-2 rounded-sm px-2 my-2'}>
-                            <label htmlFor="pegarAqui" className="block text-sm font-medium my-2">Pega aquí el texto</label>
-                            <textarea
-                                id="pegarAqui"
-                                name="pegarAqui"
-                                className="w-full border p-2 rounded min-h-[220px]"
-                                placeholder="Pega el bloque con 'Nombre' en una línea y el valor en la siguiente…"
-                                onPaste={handlePaste}
-                                value={rawPaste}
-                                onChange={(e) => setRawPaste(e.target.value)}
-                            />
-                            <p className="text-xs text-gray-600 my-2">
-                                El parser ignora líneas como <code>person</code>, <code>local_shipping</code>, <code>Datos del cliente</code>, etc.
-                            </p>
-                        </form>
-                    </div>
 
-                    {/* FORM EDITABLE */}
-                    <div className={'pdfView grid-cols-1 border-2 rounded-sm p-3'}>
-                        <div className="grid grid-cols-1 gap-3">
-                            <label className="grid grid-cols-5 items-center gap-2">
-                                <span className="col-span-1 ">RUT:</span>
+                    {/* PASTE AREA */}
+                    <form className={'border-2 rounded-sm px-2 my-2'}>
+                        <label htmlFor="pegarAqui" className="block text-sm font-medium my-2">Pega aquí el
+                            texto</label>
+                        <textarea
+                            id="pegarAqui"
+                            name="pegarAqui"
+                            className="w-full border p-2 rounded min-h-[220px]"
+                            placeholder="Pega el bloque con 'Nombre' en una línea y el valor en la siguiente…"
+                            onPaste={handlePaste}
+                            value={rawPaste}
+                            onChange={(e) => setRawPaste(e.target.value)}
+                        />
+
+                    </form>
+                </div>
+
+                {/* EDITABLE */}
+                <div className={'pdfPrint col-span-3 border-2 rounded-sm text-left p-6 aspect-3/2'}>
+                    <ul className={'p-2 text-4xl text-left'}>
+
+                        <li className={''}>
+                            <label className="">
+                                <span className=" ">DESPACHO #</span>
+                                <input className=" rounded font-semibold"
+                                       name="nombres" value={formData.preventa} onChange={handleChange}
+                                       placeholder="Numero Preventa"/>
+                            </label>
+                        </li>
+
+                        <li>
+
+                            <label className="">
+                                <span className=" text-xl">NOMBRES:</span>
                                 <input className="col-span-4 rounded p-2 font-semibold"
-                                       name="rut" value={formData.rut} onChange={handleChange} placeholder="12.345.678-9" />
+                                       name="nombres" value={formData.nombres} onChange={handleChange}
+                                       placeholder="Nombre Apellido"/>
                             </label>
+                        </li>
 
-                            <label className="grid grid-cols-5 items-center gap-2">
-                                <span className="col-span-1 ">NOMBRES:</span>
+                        <li>
+
+                            <label className="">
+                                <span className="text-xl ">RUT:</span>
                                 <input className="col-span-4 rounded p-2 font-semibold"
-                                       name="nombres" value={formData.nombres} onChange={handleChange} placeholder="Nombre Apellido" />
+                                       name="rut" value={formData.rut} onChange={handleChange}
+                                       placeholder="12.345.678-9"/>
                             </label>
+                        </li>
 
-                            <label className="grid grid-cols-5 items-center gap-2">
-                                <span className="col-span-1 ">DOMICILIO:</span>
+                        <li>
+                            <label className="">
+                                <span className="text-xl ">TELÉFONO:</span>
                                 <input className="col-span-4 rounded p-2 font-semibold"
-                                       name="domicilio" value={formData.domicilio} onChange={handleChange} placeholder="Calle 123, Depto" />
+                                       name="telefono" value={formData.telefono} onChange={handleChange}
+                                       placeholder="+56 9 12345678"/>
                             </label>
+                        </li>
 
-                            <label className="grid grid-cols-5 items-center gap-2">
-                                <span className="col-span-1 ">COMUNA:</span>
+                        <li>
+                            <label className="">
+                                <span className="text-xl ">CORREO:</span><br/>
+                                <input className="w-full font-semibold"
+                                       name="correo" type="email" value={formData.correo} onChange={handleChange}
+                                       placeholder="correo@dominio.com"/>
+                            </label>
+                        </li>
+
+                        <li>
+
+                            <label className="">
+                                <span className="text-xl ">COMUNA:</span>
                                 <input className="col-span-4 rounded p-2 font-semibold"
-                                       name="comuna" value={formData.comuna} onChange={handleChange} placeholder="Comuna" />
+                                       name="comuna" value={formData.comuna} onChange={handleChange}
+                                       placeholder="Comuna"/>
                             </label>
+                        </li>
 
-                            <label className="grid grid-cols-5 items-center gap-2">
-                                <span className="col-span-1 ">TELÉFONO:</span>
+                        <li>
+
+                            <label className="">
+                                <span className="text-xl ">DOMICILIO:</span>
                                 <input className="col-span-4 rounded p-2 font-semibold"
-                                       name="telefono" value={formData.telefono} onChange={handleChange} placeholder="+56 9 12345678" />
+                                       name="domicilio" value={formData.domicilio} onChange={handleChange}
+                                       placeholder="Calle 123, Depto"/>
                             </label>
+                        </li>
+                    </ul>
 
-                            <label className="grid grid-cols-5 items-center gap-2">
-                                <span className="col-span-1 ">CORREO:</span>
-                                <input className="col-span-4  rounded p-2 font-semibold"
-                                       name="correo" type="email" value={formData.correo} onChange={handleChange} placeholder="correo@dominio.com" />
-                            </label>
 
-                            <label className="grid grid-cols-5 items-center gap-2">
-                                <span className="col-span-1 ">INDICACIONES:</span>
-                                <input className="col-span-4 rounded p-2 font-semibold"
-                                       name="indicaciones" value={formData.indicaciones} onChange={handleChange} placeholder="Referencias / notas" />
-                            </label>
-                        </div>
-                    </div>
+
+                </div>
+                <div>
+                    <button onClick={handlePrint} type={'button'} className={'p-4 border-2 bg-amber-400 hover:bg-blue-500 rounded-lg px-2 py-1'}>
+                        IMPRIMIR
+                    </button>
                 </div>
             </section>
         </>
