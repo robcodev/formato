@@ -41,7 +41,7 @@ export function parseRecipient(text) {
   const notes = []
   let inReceiver = false
   let hasReceiver = false
-  let branch = ''
+  let orderType = ''
   for (const { key, value } of records) {
     if (key === 'cliente' || key === 'envio') { inReceiver = false; continue }
     if (key === 'receptor') {
@@ -63,11 +63,11 @@ export function parseRecipient(text) {
       if (key === 'nombres') hasReceiver = true
       continue
     }
-    if (['ignorar', 'tipo'].includes(key)) continue
-    if (key === 'sucursal') { branch = value; continue }
+    if (key === 'tipo') { orderType = value; continue }
+    // This is the seller's branch (e.g. Casa Matriz), never the destination.
+    if (['ignorar', 'sucursal'].includes(key)) continue
     if (!result[key] || key === 'domicilio') result[key] = value
   }
-  if (!result.domicilio && branch) result.domicilio = branch
   if (notes.length) result.indicaciones = [...new Set(notes)].join('\n')
   const order = clean.match(/\bpre\s*[-\s]*venta\s*(?:n[°ºo]?\.?|numero|#|:)?\s*(\d+)/i)
   if (order) result.preventa = order[1]
@@ -89,8 +89,12 @@ export function parseRecipient(text) {
   if (/\bpor\s*pagar\b/.test(n)) result.pago = 'Por pagar'
   else if (/\bpagado\b/.test(n)) result.pago = 'Pagado'
   else if (/\bcuenta corriente\b/.test(n)) result.pago = 'Cuenta corriente'
-  if (/\b(?:retiro en|envio a|entrega en) sucursal\b/.test(n)) result.entrega = 'Retiro en sucursal'
-  else if (/\ba domicilio\b/.test(n)) result.entrega = 'A domicilio'
+  const address = normalize(result.domicilio || '')
+  const type = normalize(orderType)
+  if (/\bsucursal\b/.test(address)) result.entrega = 'Retiro en sucursal'
+  else if (/\ba domicilio\b/.test(address)) result.entrega = 'A domicilio'
+  else if (/\bsucursal\b/.test(type)) result.entrega = 'Retiro en sucursal'
+  else if (/\ba domicilio\b/.test(type)) result.entrega = 'A domicilio'
   return result
 }
 

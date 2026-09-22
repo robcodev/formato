@@ -63,3 +63,23 @@ test('supports plain text and does not consume the next label as a value', () =>
  assert.equal(data.nombres,undefined); assert.equal(data.domicilio,'Calle 123'); assert.equal(data.unidad,'4'); assert.equal(data.indicaciones,'Portón azul\nSegundo piso')
  assert.deepEqual(parseRecipient('Texto sin etiquetas'), {})
 })
+
+test('destination branch reference overrides generic home-delivery order type', () => {
+ const data = parseRecipient(sample.replace('Las Dalias 2821', 'sucursal renca av. arturo prat'))
+ assert.equal(data.entrega, 'Retiro en sucursal')
+ assert.equal(data.domicilio, 'sucursal renca av. arturo prat')
+})
+test('seller branch is never a destination or delivery signal', () => {
+ const data = parseRecipient('Nombre: Ana\nSucursal: Casa Matriz')
+ assert.equal(data.domicilio, undefined)
+ assert.equal(data.entrega, undefined)
+})
+test('ambiguous addresses require selection and notes do not decide delivery', () => {
+ const data = parseRecipient('Dirección: Arturo Prat 123\nNotas: Llamar a la sucursal antes de ir a domicilio')
+ assert.equal(data.entrega, undefined)
+})
+test('explicit home delivery is detected and reference preserved', () => {
+ const data = parseRecipient('Tipo de pedido: Despacho a domicilio\nDirección: Las Dalias 2821\nSucursal: Casa Matriz')
+ assert.equal(data.entrega, 'A domicilio')
+ assert.equal(data.domicilio, 'Las Dalias 2821')
+})

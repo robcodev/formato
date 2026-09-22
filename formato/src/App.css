@@ -61,4 +61,43 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 }
 
 .contact .phone-number { font-size: 14pt; font-weight: 700; }
-.contact .phone-number > span { font-weight: 400; }
+.contact .phone-number > .label-caption { font-weight: 400; }
+
+.paste-first { grid-template-columns: minmax(0, 680px); justify-content: center; }
+.paste-title { font-size: 19px; letter-spacing: -.02em; margin: 0; }
+.delivery-choice { border: 0; padding: 0; margin: 0 0 20px; min-width: 0; }
+.delivery-choice legend { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.delivery-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.delivery-option { display: flex; align-items: flex-start; gap: 8px; border: 2px solid #d9e1db; border-radius: 10px; padding: 14px 10px; cursor: pointer; }
+.delivery-option.selected { border-color: #285d47; background: #edf3ef; }
+.delivery-option input { width: 16px; height: 16px; margin: 3px 0 0; accent-color: #285d47; flex-shrink: 0; }
+.delivery-option strong { display: block; font-size: 14px; }
+.delivery-option small { display: block; font-size: 11px; line-height: 1.5; margin-top: 5px; color: #69746f; }
+.destination-fields:not(:empty) { margin-bottom: 20px; }
+.delivery-banner { border: 2px solid black; padding: 2mm; margin-top: 3mm; text-align: center; font-size: 15pt; font-weight: 800; line-height: 1.15; color: black; }
+.branch-banner { border: 4px double black; }
+.print-incomplete { display: none; }
+@media (max-width: 420px) { .delivery-options { grid-template-columns: 1fr; } }
+@media print {
+  .print-blocked { display: none !important; }
+  .print-incomplete { display: block; padding: 5mm; font-size: 12pt; }
+}
+
+.manual-button { margin-top: 14px; }
+.label-edit-help { color: #69746f; font-size: 12px; margin: 0 0 12px; }
+.label-edit, .contact .label-edit { display: block; font: inherit; color: inherit; }
+.label-edit textarea { display: block; width: 100%; min-height: 1em; border: 0; border-radius: 2px; padding: 0; margin: 0; background: transparent; color: inherit; font: inherit; line-height: inherit; resize: none; overflow: hidden; }
+.label-edit textarea:hover { background: #edf3ef; }
+.label-edit textarea:focus { outline: 1px solid #285d47; outline-offset: 2px; background: #edf3ef; }
+.label-edit textarea::placeholder { color: #8a918d; font-weight: 400; }
+.label-edit .label-value { display: none; }
+.label-header strong { width: 45%; }
+.label-header .label-edit textarea { text-align: right; }
+.notes .label-edit { font-size: 9pt; line-height: 1.4; }
+@media print {
+  .label-edit-help { display: none; }
+  .label-edit textarea { display: none !important; }
+  .label-edit .label-value, .contact .label-edit .label-value { display: block; font: inherit; color: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .empty-label-field { display: none !important; }
+  .label-header .label-value { text-align: right; }
+}
