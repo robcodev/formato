@@ -58,3 +58,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .shipping-label { width: 100mm; height: 150mm; max-width: none; margin: 0; padding: 4mm; border: 0; outline: 0; box-shadow: none; break-inside: avoid; overflow: hidden; }
   .shipping-label, .shipping-label * { color: black; }
 }
+
+.contact .phone-number { font-size: 14pt; font-weight: 700; }
+.contact .phone-number > span { font-weight: 400; }

@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import './App.css'
+import { parseRecipient } from './recipient.js'
 
 const fields = [
   ['preventa', 'Número de despacho', 'Ej. 27967', ['preventa', 'numero de despacho']],
@@ -9,12 +10,10 @@ const fields = [
   ['correo', 'Correo electrónico', 'nombre@correo.cl', ['correo', 'email', 'e-mail', 'correo electronico']],
   ['comuna', 'Comuna / ciudad', 'Providencia', ['comuna', 'ciudad']],
   ['domicilio', 'Dirección o sucursal', 'Calle, número, departamento o sucursal', ['direccion', 'domicilio', 'sucursal']],
+  ['unidad', 'Departamento / oficina / casa', 'Ej. 403', []],
   ['indicaciones', 'Indicaciones adicionales', 'Referencias para la entrega', ['indicaciones', 'observaciones']],
 ]
 const empty = Object.fromEntries(fields.map(([name]) => [name, '']))
-const normalize = text => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim()
-const lookup = text => fields.find(field => field[3].includes(normalize(text).replace(/:$/, '').trim()))?.[0]
-
 function App() {
   const [raw, setRaw] = useState('')
   const [data, setData] = useState({ ...empty, entrega: '', pago: '' })
@@ -43,35 +42,7 @@ function App() {
     }
   }, [data])
   function extract(text) {
-    const result = {}
-    const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
-    for (let i = 0; i < lines.length; i++) {
-      const colon = lines[i].indexOf(':')
-      const key = lookup(colon < 0 ? lines[i] : lines[i].slice(0, colon))
-      if (!key) continue
-      let value = colon < 0 ? '' : lines[i].slice(colon + 1).trim()
-      const next = lines[i + 1]
-      if (!value && next && !lookup(next.split(':')[0]) && !['region', 'tipo de pedido', 'quien recibe', 'rango de despacho', '-', 'person', 'local_shipping'].includes(normalize(next))) value = next
-      if (value && value !== '-' && !result[key]) result[key] = value
-    }
-    const order = text.match(/\bpre\s*[-\s]*venta\s*(?:n[°ºo]?\.?|numero|#|:)?\s*(\d+)/i)
-    if (order) result.preventa = order[1]
-    const mail = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)
-    if (!result.correo && mail) result.correo = mail[0]
-    const rut = text.match(/\b\d{1,2}(?:\.?\d{3}){2}-[0-9kK]\b/)
-    if (!result.rut && rut) result.rut = rut[0]
-    if (result.rut) {
-      const digits = result.rut.replace(/[^0-9kK]/g, '').toUpperCase()
-      if (digits.length >= 8 && digits.length <= 9) result.rut = `${digits.slice(0, -1).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}-${digits.slice(-1)}`
-    }
-    const phone = text.match(/(?:\+56[\s-]*)?9[\s-]*\d{4}[\s-]*\d{4}\b/)
-    if (!result.telefono && phone) result.telefono = phone[0]
-    const n = normalize(text)
-    if (/\bpor\s*pagar\b/.test(n)) result.pago = 'Por pagar'
-    else if (/\bpagado\b/.test(n)) result.pago = 'Pagado'
-    else if (/\bcuenta corriente\b/.test(n)) result.pago = 'Cuenta corriente'
-    if (/\b(?:retiro en|envio a|entrega en) sucursal\b/.test(n)) result.entrega = 'Retiro en sucursal'
-    else if (/\ba domicilio\b/.test(n)) result.entrega = 'A domicilio'
+    const result = parseRecipient(text)
     setData(previous => ({ ...previous, ...result }))
     setMessage(Object.keys(result).length ? 'Datos extraídos. Revisa y ajusta los campos antes de imprimir.' : 'No encontramos datos reconocibles. Puedes escribirlos manualmente.')
   }
@@ -100,12 +71,13 @@ function App() {
         <div className="preview-heading"><h2>Vista previa</h2><span>10 × 15 cm</span></div>
         <article ref={labelRef} className="shipping-label" aria-label="Vista previa de la etiqueta de 10 por 15 centímetros">
           <div ref={contentRef} className="label-content">
-          <div className="label-header"><span>DESPACHO</span><strong>{data.preventa ? `#${data.preventa}` : '—'}</strong></div>
+          <div className="label-header"><span>DESPACHO STARKEN</span><strong>{data.preventa ? `#${data.preventa}` : '—'}</strong></div>
           <div className="recipient"><span className="label-caption">DESTINATARIO</span><h3>{data.nombres || 'Nombre del destinatario'}</h3>{data.rut && <p>RUT: {data.rut}</p>}</div>
-          <div className="destination"><span className="label-caption">DIRECCIÓN / SUCURSAL</span><p>{data.domicilio || 'Dirección de entrega'}</p><strong>{data.comuna || 'Comuna / ciudad'}</strong></div>
-          {(data.telefono || data.correo) && <div className="contact">{data.telefono && <p><span>Teléfono</span>{data.telefono}</p>}{data.correo && <p><span>Correo</span>{data.correo}</p>}</div>}
-          {data.indicaciones && <div className="notes"><span className="label-caption">INDICACIONES</span><p>{data.indicaciones}</p></div>}
+            <div className="destination"><span className="label-caption">DIRECCIÓN / SUCURSAL</span><p><span className="font-bold text-2xl">{data.domicilio || 'Dirección de entrega'}</span>{data.unidad && <><br />Depto. / Of. / Casa: <span className="font-bold">{data.unidad}</span></>}</p><strong>{data.comuna || 'Comuna / ciudad'}</strong></div>
+          {(data.telefono || data.correo) && <div className="contact">{data.telefono && <p className="phone-number"><span>Teléfono</span>{data.telefono}</p>}{data.correo && <p><span>Correo</span>{data.correo}</p>}</div>}
+
           {(data.entrega || data.pago) && <div className="label-tags">{data.entrega && <span>{data.entrega}</span>}{data.pago && <span>{data.pago}</span>}</div>}
+          {data.indicaciones && <div className="notes"><span className="label-caption">INDICACIONES</span><p>{data.indicaciones}</p></div>}
           </div>
         </article>
         <button className="button primary" disabled={!Object.values(data).some(value => value.trim())} onClick={() => window.print()}>Imprimir etiqueta</button>

@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e4fb005-a0b0-4b7d-9ad5-ba16ed22e5f8" name="Changes" comment="Se agrega front, opciones y nuevo layout para la impresion de la etiqueta" />
+    <list default="true" id="0e4fb005-a0b0-4b7d-9ad5-ba16ed22e5f8" name="Changes" comment="correcciones menores">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formato/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/formato/dist/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formato/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/formato/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formato/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/formato/src/App.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,61 +36,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0509597306806877" />
-      <entry key="MS500" value="2.2986624740366435" />
-      <entry key="S2" value="5.899719874087507" />
-      <entry key="S5" value="11.23025183564544" />
-      <entry key="S10" value="16.70261046552684" />
-      <entry key="S30" value="24.172163668665164" />
-      <entry key="S60" value="28.148969277203907" />
-      <entry key="M2" value="33.2657338928677" />
-      <entry key="M5" value="40.036839412658736" />
-      <entry key="M10" value="43.54527793282745" />
-      <entry key="M15" value="44.91267387120801" />
-      <entry key="M30" value="46.39414134887817" />
-      <entry key="H1" value="47.18084097650924" />
-      <entry key="H2" value="47.586274675548104" />
-      <entry key="H4" value="47.79208962374672" />
-      <entry key="D1" value="47.96520178896615" />
-      <entry key="W1" value="47.995025227026886" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0000000000004197" />
+      <entry key="S10" value="1.0000013698344437" />
+      <entry key="S30" value="1.0361721155442578" />
+      <entry key="S60" value="1.5419370518005682" />
+      <entry key="M2" value="3.8062809098776933" />
+      <entry key="M5" value="11.617385343527895" />
+      <entry key="M10" value="19.398001388916715" />
+      <entry key="M15" value="24.288035991243156" />
+      <entry key="M30" value="35.9710633439263" />
+      <entry key="H1" value="51.61263863855398" />
+      <entry key="H2" value="65.8719938469342" />
+      <entry key="H4" value="75.70643976936177" />
+      <entry key="D1" value="85.75425353352361" />
+      <entry key="W1" value="87.67397754283328" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="4.525950809459852E-136" />
-      <entry key="S2" value="1.4585706067510755E-34" />
-      <entry key="S5" value="2.921265185276391E-14" />
-      <entry key="S10" value="1.7091709058126366E-7" />
-      <entry key="S30" value="0.0055496019039864425" />
-      <entry key="S60" value="0.07449565023534212" />
-      <entry key="M2" value="0.2729389130104796" />
-      <entry key="M5" value="0.5948756372661774" />
-      <entry key="M10" value="0.771281814427242" />
-      <entry key="M15" value="0.841024655326746" />
-      <entry key="M30" value="0.9170739639346146" />
-      <entry key="H1" value="0.9576397881952354" />
-      <entry key="H2" value="0.9785907153632897" />
-      <entry key="H4" value="0.9892374413472668" />
-      <entry key="D1" value="0.998198142976609" />
-      <entry key="W1" value="0.9997423928549325" />
+      <entry key="MS500" value="1.5471221450407974E-117" />
+      <entry key="S2" value="6.271640596265784E-30" />
+      <entry key="S5" value="2.0863999453765604E-12" />
+      <entry key="S10" value="1.5086234689296418E-6" />
+      <entry key="S30" value="0.020558842870583783" />
+      <entry key="S60" value="0.3169896915788737" />
+      <entry key="M2" value="1.5310137075676284" />
+      <entry key="M5" value="4.915205213445787" />
+      <entry key="M10" value="7.8041762594342865" />
+      <entry key="M15" value="9.215372306163445" />
+      <entry key="M30" value="11.038694011655975" />
+      <entry key="H1" value="12.26526411960743" />
+      <entry key="H2" value="13.0409608273927" />
+      <entry key="H4" value="13.49237019294521" />
+      <entry key="D1" value="13.910938457364788" />
+      <entry key="W1" value="13.987159670937451" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.0018332460964778" />
-      <entry key="MS500" value="2.2791448708313027" />
-      <entry key="S2" value="5.887291870450416" />
-      <entry key="S5" value="11.220359203317791" />
-      <entry key="S10" value="16.695002341270428" />
-      <entry key="S30" value="24.17373325372602" />
-      <entry key="S60" value="28.22000293812777" />
-      <entry key="M2" value="33.53514774569409" />
-      <entry key="M5" value="40.629183197597094" />
-      <entry key="M10" value="44.31499003881042" />
-      <entry key="M15" value="45.752572254696425" />
-      <entry key="M30" value="47.3106087384567" />
-      <entry key="H1" value="48.13816590537018" />
-      <entry key="H2" value="48.56470497458465" />
-      <entry key="H4" value="48.781246098267026" />
-      <entry key="D1" value="48.96338633106919" />
-      <entry key="W1" value="48.99476567428055" />
+      <entry key="MS100" value="0.9012504626108302" />
+      <entry key="MS500" value="0.9794202975869268" />
+      <entry key="S2" value="0.9948148855014217" />
+      <entry key="S5" value="0.9979227190005225" />
+      <entry key="S10" value="0.9989630504398707" />
+      <entry key="S30" value="1.0518115935068155" />
+      <entry key="S60" value="1.82624551963286" />
+      <entry key="M2" value="5.268341788991701" />
+      <entry key="M5" value="16.45572530704966" />
+      <entry key="M10" value="27.14473892443514" />
+      <entry key="M15" value="33.45919411752709" />
+      <entry key="M30" value="46.98403271456768" />
+      <entry key="H1" value="63.86394616160978" />
+      <entry key="H2" value="78.905663907191" />
+      <entry key="H4" value="89.19507962325575" />
+      <entry key="D1" value="99.66455774686432" />
+      <entry key="W1" value="101.66104629024997" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -134,7 +139,7 @@
       <option name="presentableId" value="Default" />
       <updated>1761312448661</updated>
       <workItem from="1761312450531" duration="19000" />
-      <workItem from="1790099052537" duration="1246000" />
+      <workItem from="1790099052537" duration="3903000" />
     </task>
     <task id="LOCAL-00001" summary="Se agrega front, opciones y nuevo layout para la impresion de la etiqueta">
       <option name="closed" value="true" />
@@ -144,7 +149,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790101193238</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="correcciones menores">
+      <option name="closed" value="true" />
+      <created>1790101960556</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1790101960556</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,6 +176,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Se agrega front, opciones y nuevo layout para la impresion de la etiqueta" />
-    <option name="LAST_COMMIT_MESSAGE" value="Se agrega front, opciones y nuevo layout para la impresion de la etiqueta" />
+    <MESSAGE value="correcciones menores" />
+    <option name="LAST_COMMIT_MESSAGE" value="correcciones menores" />
   </component>
 </project>
