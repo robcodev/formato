@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e4fb005-a0b0-4b7d-9ad5-ba16ed22e5f8" name="Changes" comment="" />
+    <list default="true" id="0e4fb005-a0b0-4b7d-9ad5-ba16ed22e5f8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/formato/dist/assets/index-DotBZ4Jb.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/formato/dist/assets/index-Y81DiGHG.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/formato/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/formato/dist/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formato/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/formato/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formato/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/formato/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formato/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/formato/src/App.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 1
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "robcodev"
+  }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/robcodev/formato",
+    "accountId": "9fd23146-6b01-4018-8d4a-472ec50cdeb0"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="34VxGhezjP7xNYhMnY0fddPB3SB" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -19,8 +48,21 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "C:/Users/multi/AppData/Roaming/JetBrains/WebStorm2026.1/node/versions/24.21.0/node",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -28,7 +70,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-WS-251.25410.117" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.26222.58" />
       </set>
     </attachedChunks>
   </component>
@@ -40,7 +82,11 @@
       <option name="presentableId" value="Default" />
       <updated>1761312448661</updated>
       <workItem from="1761312450531" duration="19000" />
+      <workItem from="1790099052537" duration="897000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>
