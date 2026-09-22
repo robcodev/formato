@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import './App.css'
 
 const fields = [
@@ -19,6 +19,29 @@ function App() {
   const [raw, setRaw] = useState('')
   const [data, setData] = useState({ ...empty, entrega: '', pago: '' })
   const [message, setMessage] = useState('')
+  const labelRef = useRef(null)
+  const contentRef = useRef(null)
+  useLayoutEffect(() => {
+    const label = labelRef.current
+    const content = contentRef.current
+    const fit = () => {
+      const style = getComputedStyle(label)
+      const available = label.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)
+      const scale = Math.min(1, available / Math.max(content.offsetHeight, 1))
+      content.style.transform = `scale(${scale})`
+    }
+    const observer = new ResizeObserver(fit)
+    observer.observe(label)
+    observer.observe(content)
+    window.addEventListener('beforeprint', fit)
+    window.addEventListener('afterprint', fit)
+    fit()
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('beforeprint', fit)
+      window.removeEventListener('afterprint', fit)
+    }
+  }, [data])
   function extract(text) {
     const result = {}
     const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
@@ -74,17 +97,19 @@ function App() {
         </section>
       </div>
       <aside className="preview-column">
-        <div className="preview-heading"><h2>Vista previa</h2><span>Se actualiza al editar</span></div>
-        <article className="shipping-label" aria-label="Vista previa de la etiqueta">
+        <div className="preview-heading"><h2>Vista previa</h2><span>10 × 15 cm</span></div>
+        <article ref={labelRef} className="shipping-label" aria-label="Vista previa de la etiqueta de 10 por 15 centímetros">
+          <div ref={contentRef} className="label-content">
           <div className="label-header"><span>DESPACHO</span><strong>{data.preventa ? `#${data.preventa}` : '—'}</strong></div>
           <div className="recipient"><span className="label-caption">DESTINATARIO</span><h3>{data.nombres || 'Nombre del destinatario'}</h3>{data.rut && <p>RUT: {data.rut}</p>}</div>
           <div className="destination"><span className="label-caption">DIRECCIÓN / SUCURSAL</span><p>{data.domicilio || 'Dirección de entrega'}</p><strong>{data.comuna || 'Comuna / ciudad'}</strong></div>
           {(data.telefono || data.correo) && <div className="contact">{data.telefono && <p><span>Teléfono</span>{data.telefono}</p>}{data.correo && <p><span>Correo</span>{data.correo}</p>}</div>}
           {data.indicaciones && <div className="notes"><span className="label-caption">INDICACIONES</span><p>{data.indicaciones}</p></div>}
           {(data.entrega || data.pago) && <div className="label-tags">{data.entrega && <span>{data.entrega}</span>}{data.pago && <span>{data.pago}</span>}</div>}
+          </div>
         </article>
         <button className="button primary" disabled={!Object.values(data).some(value => value.trim())} onClick={() => window.print()}>Imprimir etiqueta</button>
-        <p className="print-help">También puedes elegir «Guardar como PDF» en la ventana de impresión.</p>
+        <p className="print-help">Papel de 100 × 150 mm y escala 100 %. Si tu navegador agrega título o numeración, desactiva «Encabezados y pies de página» al imprimir.</p>
       </aside>
     </div>
   </main>

@@ -29,11 +29,32 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 @media (max-width: 800px) { .workspace { grid-template-columns: 1fr; }.preview-column { position: static; }.app-shell { padding: 28px 20px; }.brand { display: none; } }
 @media (max-width: 420px) { .fields { grid-template-columns: 1fr; }.panel, .shipping-label { padding: 20px; }.source-footer { align-items: flex-start; flex-direction: column; }.preview-heading { flex-wrap: wrap; } }
+/* The preview and the printed label share the same physical proportions. */
+.shipping-label { position: relative; width: 100mm; max-width: 100%; aspect-ratio: 2 / 3; margin-inline: auto; padding: 4mm; border: 0; outline: 1px solid #d7ded8; }
+.label-content { display: flow-root; transform-origin: top left; }
+.label-header { padding-bottom: 3mm; gap: 3mm; }
+.label-header strong { font-size: 18pt; }
+.label-header > span { font-size: 9pt; }
+.label-caption { font-size: 7pt; margin-bottom: 1.5mm; }
+.recipient { padding: 4mm 0; }
+.recipient h3 { font-size: 17pt; margin-bottom: 2mm; }
+.recipient p, .contact { font-size: 10pt; }
+.destination { padding: 3mm 0; }
+.destination p { font-size: 14pt; margin-bottom: 2mm; }
+.destination strong { font-size: 13pt; }
+.contact { padding-top: 3mm; }
+.contact p { margin: 1mm 0; }
+.notes { margin-top: 3mm; }
+.notes p { font-size: 9pt; line-height: 1.4; }
+.label-tags { margin-top: 4mm; gap: 2mm; }
+.label-tags span { font-size: 8pt; padding: 1mm 2mm; }
 @media print {
-  @page { size: A5; margin: 10mm; }
-  :root, body { background: white; color: black; }
+  /* Zero page margins suppress the browser title, URL and page counters.
+     Safe space for the printer is supplied by the label's inner padding. */
+  @page { size: 100mm 150mm; margin: 0; }
+  :root, body, #root { background: white; color: black; width: 100mm; margin: 0; padding: 0; }
   .page-header, .editor, .preview-heading, .primary, .print-help { display: none !important; }
   .app-shell, .workspace, .preview-column { display: block; position: static; padding: 0; margin: 0; width: 100%; max-width: none; }
-  .shipping-label { border: 0; padding: 0; box-shadow: none; }
-  .recipient, .destination, .notes, .contact, .label-tags { break-inside: avoid; }
+  .shipping-label { width: 100mm; height: 150mm; max-width: none; margin: 0; padding: 4mm; border: 0; outline: 0; box-shadow: none; break-inside: avoid; overflow: hidden; }
+  .shipping-label, .shipping-label * { color: black; }
 }
