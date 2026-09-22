@@ -73,7 +73,18 @@ function App() {
           <div ref={contentRef} className="label-content">
           <div className="label-header"><span>DESPACHO STARKEN</span><strong>{data.preventa ? `#${data.preventa}` : '—'}</strong></div>
           <div className="recipient"><span className="label-caption">DESTINATARIO</span><h3>{data.nombres || 'Nombre del destinatario'}</h3>{data.rut && <p>RUT: {data.rut}</p>}</div>
-            <div className="destination"><span className="label-caption">DIRECCIÓN / SUCURSAL</span><p><span className="font-bold text-2xl">{data.domicilio || 'Dirección de entrega'}</span>{data.unidad && <><br />Depto. / Of. / Casa: <span className="font-bold">{data.unidad}</span></>}</p><strong>{data.comuna || 'Comuna / ciudad'}</strong></div>
+          <div className="destination">
+            <span className="label-caption">DIRECCIÓN / SUCURSAL</span>
+            <p className="destination-address font-bold text-2xl">
+              {data.domicilio || 'Dirección de entrega'}
+            </p>
+            {data.unidad && (
+              <p>
+                Depto. / Of. / Casa: <span className="font-bold">{data.unidad}</span>
+              </p>
+            )}
+            <strong>{data.comuna || 'Comuna / ciudad'}</strong>
+          </div>
           {(data.telefono || data.correo) && <div className="contact">{data.telefono && <p className="phone-number"><span>Teléfono</span>{data.telefono}</p>}{data.correo && <p><span>Correo</span>{data.correo}</p>}</div>}
 
           {(data.entrega || data.pago) && <div className="label-tags">{data.entrega && <span>{data.entrega}</span>}{data.pago && <span>{data.pago}</span>}</div>}

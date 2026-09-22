@@ -41,6 +41,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .recipient p, .contact { font-size: 10pt; }
 .destination { padding: 3mm 0; }
 .destination p { font-size: 14pt; margin-bottom: 2mm; }
+.destination .destination-address { font-size: 18pt; line-height: 1.3; }
 .destination strong { font-size: 13pt; }
 .contact { padding-top: 3mm; }
 .contact p { margin: 1mm 0; }
