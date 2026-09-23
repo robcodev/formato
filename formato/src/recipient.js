@@ -1,3 +1,5 @@
+import { extractSaleTotal } from './saleTotal.js'
+
 const normalize = text => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim()
 const aliases = {
   nombres: ['nombre completo', 'nombres', 'nombre', 'cliente'],
@@ -14,7 +16,7 @@ const aliases = {
   envio: ['envio'],
   tipo: ['tipo de pedido'],
   preventa: ['preventa', 'numero de despacho'],
-  ignorar: ['archivo adjunto', 'rango de despacho', 'region', 'giro', 'detalle', 'despacho', 'pago', 'notificaciones', 'historial'],
+  ignorar: ['archivo adjunto', 'rango de despacho', 'region', 'giro', 'detalle', 'despacho', 'pago', 'notificaciones', 'historial', 'total', 'total de la venta', 'total venta', 'total del pedido', 'total a pagar', 'total general', 'monto total', 'subtotal'],
 }
 const labels = Object.entries(aliases).flatMap(([key, values]) => values.map(label => ({ key, label }))).sort((a, b) => b.label.length - a.label.length)
 const present = value => value && !/^[-–—]+$/.test(value.trim())
@@ -31,6 +33,7 @@ export function parseRecipient(text) {
   const lines = clean.split(/\r?\n/).map(line => line.replace(/^\s*#+\s*/, '').replace(/^(?:person|local_shipping|note_add)\s*/, '').trim()).filter(Boolean)
   const records = []
   for (const line of lines) {
+    if (/^\$\s*[\d.,]+$/.test(line)) continue
     const normalized = normalize(line)
     const match = labels.find(({ label }) => normalized === label || normalized.startsWith(`${label}:`))
     if (match) records.push({ key: match.key, value: line.slice(match.label.length).replace(/^\s*:\s*/, '').trim() })
@@ -95,6 +98,8 @@ export function parseRecipient(text) {
   else if (/\ba domicilio\b/.test(address)) result.entrega = 'A domicilio'
   else if (/\bsucursal\b/.test(type)) result.entrega = 'Retiro en sucursal'
   else if (/\ba domicilio\b/.test(type)) result.entrega = 'A domicilio'
+  const total = extractSaleTotal(text)
+  if (total !== null) result.totalVenta = String(total)
   return result
 }
 

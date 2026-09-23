@@ -1,8 +1,9 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import './App.css'
 import { parseRecipient } from './recipient.js'
+import { needsReceipt, parsePesos } from './saleTotal.js'
 
-const empty = { preventa: '', nombres: '', rut: '', telefono: '', correo: '', comuna: '', indicaciones: '', domicilio: '', sucursalDestino: '', unidad: '', entrega: '', pago: '' }
+const empty = { preventa: '', nombres: '', rut: '', telefono: '', correo: '', comuna: '', indicaciones: '', domicilio: '', sucursalDestino: '', unidad: '', entrega: '', pago: '', totalVenta: '' }
 
 function LabelField({ name, value, placeholder, onChange }) {
   const ref = useRef(null)
@@ -37,6 +38,7 @@ function App() {
   const contentRef = useRef(null)
   const isBranch = data.entrega === 'Retiro en sucursal'
   const isHome = data.entrega === 'A domicilio'
+  const receiptRequired = needsReceipt(data.totalVenta)
   const destination = isBranch ? data.sucursalDestino : isHome ? data.domicilio : ''
   const canPrint = hasExtracted && Boolean(data.entrega && destination.trim() && data.nombres.trim())
   const deliveryTitle = isBranch ? 'RETIRAR EN SUCURSAL STARKEN' : isHome ? 'ENTREGA A DOMICILIO' : 'ELIGE EL TIPO DE ENTREGA'
@@ -109,7 +111,6 @@ function App() {
             <p role="status" className="status">{message}</p>
           </section>
           {hasExtracted && <section className="panel">
-            <div className="section-heading"><span className="step">2</span><h2>Define el destino y revisa</h2></div>
             <fieldset className="delivery-choice">
               <legend>¿Dónde se entrega?</legend>
               <div className="delivery-options">
@@ -120,6 +121,13 @@ function App() {
               </div>
             </fieldset>
             {!data.entrega && <p className="status">No pudimos determinar el tipo de entrega. Selecciona una opción.</p>}
+            <label className="sale-total-control">
+              <span>Total de la venta (no se imprime)</span>
+              <input name="totalVenta" inputMode="numeric" value={data.totalVenta} onChange={change} placeholder="Ej. 55000" aria-describedby="receipt-help" />
+            </label>
+            <p className="status" id="receipt-help" role="status">{parsePesos(data.totalVenta) === null
+              ? 'Ingresa o confirma el total para determinar si corresponde la marca.'
+              : receiptRequired ? '◆ Adjuntar boleta o factura aparte. En la etiqueta solo aparecerá el símbolo.' : 'No corresponde marca: el total no supera $50.000.'}</p>
           </section>}
         </div>
         {hasExtracted && <aside className="preview-column">
@@ -127,7 +135,7 @@ function App() {
           <p className="label-edit-help">Haz clic sobre cualquier dato para escribir o corregirlo.</p>
           <article ref={labelRef} className="shipping-label" aria-label="Vista previa de la etiqueta de 10 por 15 centímetros">
             <div ref={contentRef} className="label-content">
-              <div className="label-header"><span>DESPACHO STARKEN</span><strong><LabelField name="preventa" value={data.preventa} placeholder="Número de despacho" onChange={change} /></strong></div>
+              <div className="label-header"><span>DESPACHO STARKEN</span>{receiptRequired && <span className="receipt-marker" aria-label="Documento aparte">◆</span>}<strong><LabelField name="preventa" value={data.preventa} placeholder="Número de despacho" onChange={change} /></strong></div>
               <div className={`delivery-banner ${isBranch ? 'branch-banner' : ''}`}>{deliveryTitle}</div>
               <div className="recipient">
                 <span className="label-caption">DESTINATARIO</span>
@@ -135,10 +143,11 @@ function App() {
                 <div className={!data.rut ? 'empty-label-field' : ''}><span className="label-caption">RUT</span><LabelField name="rut" value={data.rut} placeholder="RUT (opcional)" onChange={change} /></div>
               </div>
               <div className="destination">
+                <span className="label-caption">COMUNA / CIUDAD</span>
+                <p className="destination-commune font-bold"><LabelField name="comuna" value={data.comuna} placeholder="Comuna / ciudad" onChange={change} /></p>
                 <span className="label-caption">{isBranch ? 'SUCURSAL DE DESTINO' : 'DIRECCIÓN DE ENTREGA'}</span>
                 <p className="destination-address font-bold text-2xl"><LabelField name={isBranch ? 'sucursalDestino' : 'domicilio'} value={isBranch ? data.sucursalDestino : data.domicilio} placeholder={isBranch ? 'Dirección o referencia de la sucursal' : 'Calle y número'} onChange={change} /></p>
                 {isHome && <div className={!data.unidad ? 'empty-label-field' : ''}><span className="label-caption">DEPTO. / OF. / CASA</span><strong><LabelField name="unidad" value={data.unidad} placeholder="Departamento / oficina / casa" onChange={change} /></strong></div>}
-                <strong><LabelField name="comuna" value={data.comuna} placeholder="Comuna / ciudad" onChange={change} /></strong>
               </div>
               <div className="contact">
                 <div className={`phone-number ${data.telefono ? '' : 'empty-label-field'}`}><span className="label-caption">TELÉFONO</span><LabelField name="telefono" value={data.telefono} placeholder="Teléfono" onChange={change} /></div>

@@ -41,7 +41,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .recipient p, .contact { font-size: 10pt; }
 .destination { padding: 3mm 0; }
 .destination p { font-size: 14pt; margin-bottom: 2mm; }
-.destination .destination-address { font-size: 18pt; line-height: 1.3; }
+.destination .destination-commune { font-size: 18pt; line-height: 1.3; }
+.destination .destination-address { font-size: 13pt; line-height: 1.3; }
 .destination strong { font-size: 13pt; }
 .contact { padding-top: 3mm; }
 .contact p { margin: 1mm 0; }
@@ -101,3 +102,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   .empty-label-field { display: none !important; }
   .label-header .label-value { text-align: right; }
 }
+
+.sale-total-control { display: grid; gap: 8px; font-size: 12px; font-weight: 600; margin-top: 18px; }
+.label-header .receipt-marker { font-size: 12pt; letter-spacing: 0; flex-shrink: 0; }
+.label-header strong { margin-left: auto; min-width: 0; }
